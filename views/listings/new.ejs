@@ -1,0 +1,133 @@
+<% layout("/layouts/boilerplate")%>
+
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
+
+            <h3>Create a New Listing</h3>
+            <!-- yh jo entype hai yh files upload krne ka step 1 hai  -->
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" placeholder="enter title" type="text" class="form-control" required />
+                    <div class="valid-feedback">Title looks good!</div>
+
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Please enter a short description</div>
+
+                </div>
+
+
+
+
+
+
+
+                
+
+                <div class="mb-3">
+
+                    <label for="category" class="form-label">Category</label>
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown">
+                            Select Category
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><button class="dropdown-item" type="button"  onclick="selectCategory('Trending')">Trending</button></li>
+                            <li><button class="dropdown-item" type="button"  onclick="selectCategory('Rooms')">Rooms</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Iconic Cities')">Iconic Cities</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Beach')">Beach</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Lakeside')">Lakeside</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Forest')">Forest</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Mountains')">Mountains</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Castles')">Castles</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Amazing Pools')">Amazing Pools</button></li>
+                                <li><button class="dropdown-item" type="button"  onclick="selectCategory('Camping')">Camping</button></li>
+                            <li><button class="dropdown-item" type="button"  onclick="selectCategory('Arctic')">Arctic</button></li>
+                            <li><button class="dropdown-item"  type="button" onclick="selectCategory('Farms')">Farms</button></li>
+
+                        </ul>
+                    </div>
+                    <input type="hidden" name="listing[category]" id="selectedCategory" value="" />
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Listing Image</label>
+                    <input name="listing[image]" type="file" class="form-control" />
+
+                </div>
+
+                <!-- price aur country ko ek hi row mae lane ke lie -->
+                <div class="row">
+
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" placeholder="enter price" class="form-control" required />
+                        <div class="invalid-feedback">Please enter a valid Price</div>
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input name="listing[country]" placeholder="enter country" type="text" class="form-control"
+                            required />
+                        <div class="invalid-feedback">Country name should be valid</div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" placeholder="enter location" type="text" class="form-control"
+                        required />
+                    <div class="invalid-feedback">Location should be valid</div>
+
+                </div>
+
+                <button class="btn btn-dark mt-3 mb-3">Add</button>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        function selectCategory(category) {
+           
+
+          // Update the dropdown button text
+          const dropdownButton = document.getElementById('dropdownMenuButton');
+          dropdownButton.textContent = category;
+      
+          // Set the value of the hidden input to the selected category
+          const selectedCategoryInput = document.getElementById('selectedCategory');
+          selectedCategoryInput.value = category;
+          console.log("Selected category:", category); 
+        }
+      </script>

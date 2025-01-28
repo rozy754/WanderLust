@@ -1,0 +1,167 @@
+<style>
+  /* .icon{
+    size:4rem !important;
+  } */
+  .search-btn{
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem 1 1rem;
+  }
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+
+  .search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  .search-inp{
+    border-radius:25px;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    font-size: 1rem;
+  }
+
+  .suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  border-radius: 7px;
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+
+  width: 300px;
+ 
+  display: none; /* Initially hidden */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-dropdown li {
+  padding: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.suggestions-dropdown li:hover {
+  background-color: #f8f9fa;
+}
+
+.custom{
+  opacity: 60%;
+}
+.custom:hover{
+  opacity:100%;
+
+}
+
+
+
+
+</style>
+<!-- // vo jo border bottom likha hai bo bootstrap ki class hai us se kisi bhi chej ka border dikhae dene lg jata hai  -->
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+    <div class="container-fluid ">
+      <a  class="navbar-brand" href="/listings"><i class="fa-regular fa-compass" style="font-size: 2.2rem; color: red;"></i></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+      data-bs-target="#navbarNavAltMarkup" 
+    >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          
+          <a class="navbar-brand d-flex align-items-center  "href="/listings">Explore</a>
+        </div>
+        <!-- <div class="navbar-nav ms-auto">
+          <form class="d-flex" role="search">
+            <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations" >
+            <button class="btn search-btn" type="submit"> <i class="fa-solid fa-magnifying-glass"></i>Search</button>
+          </form>
+        </div> -->
+
+
+        <div class="navbar-nav ms-auto">
+          <form class="d-flex" role="search" id="searchForm">
+            <input class="form-control me-2 search-inp" type="search" id="searchLocation" placeholder="Search destinations" autocomplete="off">
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>Search
+            </button>
+            <ul id="suggestionsList" class="suggestions-dropdown"></ul> <!-- Suggestions will appear here -->
+          </form>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link mt-2 custom" href="/listings/new"><b>Airbnb your home</b></a>
+          <%if(!currUser) { %>
+          <!-- <a class="nav-link" href="/signup"><b>Sign up</b></a> -->
+          <a class="nav-link" href="/signup"><button class="btn btn-outline-danger"><b>Sign up</b></button></a>
+          <a type="button"class="nav-link" href="/login"><button class="btn btn-outline-dark"><b>Log in</b></button></a>
+          <% } %> <% if(currUser) { %>
+          <a class="nav-link" href="/logout">Log out</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <script>
+document.getElementById('searchLocation').addEventListener('input', function() {
+    let query = this.value;
+
+    if (query.length >= 2) { // Start searching after 2 characters
+        fetch(`/listings/search?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const suggestionsList = document.getElementById('suggestionsList');
+                suggestionsList.innerHTML = ''; // Clear previous suggestions
+
+                if (data.suggestions.length > 0) {
+                    suggestionsList.style.display = 'block'; // Show the dropdown
+                    data.suggestions.forEach(location => {
+                        const li = document.createElement('li');
+                        li.classList.add("dropdown-item");
+                        li.textContent = location;
+                        li.addEventListener('click', function() {
+                          const location = this.textContent;
+                            suggestionsList.style.display = 'none'; // Hide suggestions after selection
+                           
+                            window.location.href = `/listings/location?location=${encodeURIComponent(location)}`;
+                          });
+                        suggestionsList.appendChild(li);
+                    });
+                } else {
+                  document.getElementById("suggestionsList").style.display = "none"; // Hide if no suggestions
+                }
+            });
+    } else {
+        document.getElementById('suggestionsList').style.display = 'none'; // Hide suggestions if query is short
+    }
+});
+
+// Trigger search and show listings on the main page
+function searchListings(location) {
+    window.location.href = `/listings/location?location=${location}`; // Redirect to the listings page with the selected location
+}
+
+
+  </script>
